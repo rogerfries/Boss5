@@ -65,6 +65,12 @@ net estop-ext     <=  hm2_7i76e.0.7i76.0.0.input-07
 # --- PROBE-IN ---
 net probe-in     <=  hm2_7i76e.0.7i76.0.0.input-08
 
+# --- PLATE-IN ---
+#net plate-in     <=  hm2_7i76e.0.7i76.0.0.input-09
+
+# --- Power-IN ---
+net power-in     <=  hm2_7i76e.0.7i76.0.0.input-09
+
 #*******************
 #  AXIS X JOINT 0
 #*******************
@@ -376,6 +382,7 @@ net coolant-flood     <=  iocontrol.0.coolant-flood
 #  ---probe signal---
 
 net probe-in     =>  motion.probe-input
+
 
 #  ---motion control signals---
 
