@@ -392,8 +392,27 @@ net machine-is-enabled        <=  motion.motion-enabled
 
 #  ---estop signals---
 
-net estop-out     <=  iocontrol.0.user-enable-out
-net estop-ext     =>  iocontrol.0.emc-enable-in
+#net estop-out     <=  iocontrol.0.user-enable-out
+#net estop-ext     =>  iocontrol.0.emc-enable-in  
+
+
+loadrt estop_latch
+addf estop-latch.0 servo-thread
+net estop-loopout iocontrol.0.emc-enable-in <= estop-latch.0.ok-out
+net estop-loopin iocontrol.0.user-enable-out => estop-latch.0.ok-in
+net estop-reset iocontrol.0.user-request-enable => estop-latch.0.reset
+net remote-estop estop-latch.0.fault-in <=  hm2_7i76e.0.7i76.0.0.input-07-not
+
+loadrt oneshot count=2
+addf oneshot.0 servo-thread
+setp oneshot.0.width 1
+setp oneshot.0.retriggerable 0
+setp oneshot.0.rising 1
+net estop-out-MO estop-latch.0.reset => oneshot.0.in
+net estop-reset-MO <= oneshot.0.out
+net estop-reset-MO => halui.machine-on
+
+
 
 #  ---manual tool change signals---
 
